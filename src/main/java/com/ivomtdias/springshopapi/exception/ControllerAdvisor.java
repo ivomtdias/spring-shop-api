@@ -15,9 +15,9 @@ import java.util.Map;
 @ControllerAdvice
 @Slf4j
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Object> handleUserAlreadyExistsException(
-            UserAlreadyExistsException ex, WebRequest request) {
+    @ExceptionHandler({UserAlreadyExistsException.class, ProductAlreadyExistsException.class})
+    public ResponseEntity<Object> handleAlreadyExistsException(
+            RuntimeException ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -25,5 +25,17 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         log.error(ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class})
+    public ResponseEntity<Object> handleUserNotFoundException(
+            RuntimeException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
