@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.utility;
+package com.ivomtdias.springshopapi.utility;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

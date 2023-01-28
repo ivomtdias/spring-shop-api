@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.model.response;
+package com.ivomtdias.springshopapi.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignInResponse {
-    private String token;
+public class SignInRequest {
+    private String email;
+    private String password;
 }

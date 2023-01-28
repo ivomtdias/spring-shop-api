@@ -1,6 +1,6 @@
-package com.ivomtdias.springshopapi.auth.filter;
+package com.ivomtdias.springshopapi.filter;
 
-import com.ivomtdias.springshopapi.auth.utility.JWTUtility;
+import com.ivomtdias.springshopapi.utility.JWTUtility;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

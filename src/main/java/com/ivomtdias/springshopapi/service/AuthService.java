@@ -1,14 +1,14 @@
-package com.ivomtdias.springshopapi.auth.service;
+package com.ivomtdias.springshopapi.service;
 
-import com.ivomtdias.springshopapi.auth.exception.UserAlreadyExistsException;
-import com.ivomtdias.springshopapi.auth.model.Role;
-import com.ivomtdias.springshopapi.auth.model.User;
-import com.ivomtdias.springshopapi.auth.model.request.SignInRequest;
-import com.ivomtdias.springshopapi.auth.model.request.SignUpRequest;
-import com.ivomtdias.springshopapi.auth.model.response.SignInResponse;
-import com.ivomtdias.springshopapi.auth.model.response.SignUpResponse;
-import com.ivomtdias.springshopapi.auth.repository.UserRepository;
-import com.ivomtdias.springshopapi.auth.utility.JWTUtility;
+import com.ivomtdias.springshopapi.exception.UserAlreadyExistsException;
+import com.ivomtdias.springshopapi.model.Role;
+import com.ivomtdias.springshopapi.model.User;
+import com.ivomtdias.springshopapi.model.request.SignInRequest;
+import com.ivomtdias.springshopapi.model.request.SignUpRequest;
+import com.ivomtdias.springshopapi.model.response.SignInResponse;
+import com.ivomtdias.springshopapi.model.response.SignUpResponse;
+import com.ivomtdias.springshopapi.repository.UserRepository;
+import com.ivomtdias.springshopapi.utility.JWTUtility;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

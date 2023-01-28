@@ -1,6 +1,6 @@
-package com.ivomtdias.springshopapi.auth.config;
+package com.ivomtdias.springshopapi.config;
 
-import com.ivomtdias.springshopapi.auth.repository.UserRepository;
+import com.ivomtdias.springshopapi.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

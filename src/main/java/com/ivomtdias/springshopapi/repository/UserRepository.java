@@ -1,6 +1,6 @@
-package com.ivomtdias.springshopapi.auth.repository;
+package com.ivomtdias.springshopapi.repository;
 
-import com.ivomtdias.springshopapi.auth.model.User;
+import com.ivomtdias.springshopapi.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

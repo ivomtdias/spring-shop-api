@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.model.request;
+package com.ivomtdias.springshopapi.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

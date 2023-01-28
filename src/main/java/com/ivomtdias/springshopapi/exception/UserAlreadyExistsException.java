@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.exception;
+package com.ivomtdias.springshopapi.exception;
 
 public class UserAlreadyExistsException extends RuntimeException{
     public UserAlreadyExistsException(String email){

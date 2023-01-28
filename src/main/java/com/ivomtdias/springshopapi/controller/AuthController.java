@@ -1,10 +1,10 @@
-package com.ivomtdias.springshopapi.auth.controller;
+package com.ivomtdias.springshopapi.controller;
 
-import com.ivomtdias.springshopapi.auth.model.request.SignInRequest;
-import com.ivomtdias.springshopapi.auth.model.request.SignUpRequest;
-import com.ivomtdias.springshopapi.auth.model.response.SignInResponse;
-import com.ivomtdias.springshopapi.auth.model.response.SignUpResponse;
-import com.ivomtdias.springshopapi.auth.service.AuthService;
+import com.ivomtdias.springshopapi.model.request.SignInRequest;
+import com.ivomtdias.springshopapi.model.request.SignUpRequest;
+import com.ivomtdias.springshopapi.model.response.SignInResponse;
+import com.ivomtdias.springshopapi.model.response.SignUpResponse;
+import com.ivomtdias.springshopapi.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.exception;
+package com.ivomtdias.springshopapi.exception;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String id) {

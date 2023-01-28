@@ -1,6 +1,6 @@
-package com.ivomtdias.springshopapi.auth.model.dto;
+package com.ivomtdias.springshopapi.model.dto;
 
-import com.ivomtdias.springshopapi.auth.model.Role;
+import com.ivomtdias.springshopapi.model.Role;
 
 import java.util.UUID;
 

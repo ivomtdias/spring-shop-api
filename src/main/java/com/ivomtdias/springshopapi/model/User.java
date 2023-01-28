@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.model;
+package com.ivomtdias.springshopapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;

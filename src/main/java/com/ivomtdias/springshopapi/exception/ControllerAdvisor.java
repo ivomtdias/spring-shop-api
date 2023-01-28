@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.exception;
+package com.ivomtdias.springshopapi.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

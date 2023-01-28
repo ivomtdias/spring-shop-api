@@ -1,4 +1,4 @@
-package com.ivomtdias.springshopapi.auth.model.response;
+package com.ivomtdias.springshopapi.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

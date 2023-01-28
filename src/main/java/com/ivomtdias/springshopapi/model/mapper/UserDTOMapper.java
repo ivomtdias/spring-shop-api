@@ -1,7 +1,7 @@
-package com.ivomtdias.springshopapi.auth.model.mapper;
+package com.ivomtdias.springshopapi.model.mapper;
 
-import com.ivomtdias.springshopapi.auth.model.User;
-import com.ivomtdias.springshopapi.auth.model.dto.UserDTO;
+import com.ivomtdias.springshopapi.model.User;
+import com.ivomtdias.springshopapi.model.dto.UserDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
