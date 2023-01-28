@@ -6,10 +6,12 @@ import com.ivomtdias.springshopapi.model.Product;
 import com.ivomtdias.springshopapi.model.dto.ProductDTO;
 import com.ivomtdias.springshopapi.model.mapper.ProductDTOMapper;
 import com.ivomtdias.springshopapi.model.request.CreateProductRequest;
+import com.ivomtdias.springshopapi.model.request.UpdateProductRequest;
 import com.ivomtdias.springshopapi.repository.ProductRepository;
 import com.ivomtdias.springshopapi.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -59,18 +61,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Set<ProductDTO> getProductsByName(final String productName) {
-        return productRepository.findProductsByNameContainingIgnoreCase(productName)
+        List<Product> products = productRepository.findProductsByNameContainingIgnoreCase(productName);
+        if(products.isEmpty())
+            throw new ProductNotFoundException(productName);
+
+        return products
                 .stream()
                 .map(productDTOMapper)
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public void updateProduct(final ProductDTO productDTO) {
-        if(productRepository.findById(productDTO.id()).isEmpty())
-            throw new ProductNotFoundException(productDTO.id());
+    public void updateProduct(final UUID productId, final UpdateProductRequest updateProductRequest) {
+        if(productRepository.findById(productId).isEmpty())
+            throw new ProductNotFoundException(productId);
 
-        productRepository.updateProductById(productDTO.name(), productDTO.price(), productDTO.id());
+        productRepository.updateProductById(updateProductRequest.getName(), updateProductRequest.getPrice(), productId);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ivomtdias.springshopapi.repository;
 
 import com.ivomtdias.springshopapi.model.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     Optional<Product> findProductByNameIgnoreCase(String productName);
     List<Product> findProductsByNameContainingIgnoreCase(String productName);
+    @Transactional
     @Modifying
     @Query("update Product p set p.name = :name, p.price = :price where p.id = :id")
     void updateProductById(
