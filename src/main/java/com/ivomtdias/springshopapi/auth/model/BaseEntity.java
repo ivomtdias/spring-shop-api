@@ -1,16 +1,21 @@
 package com.ivomtdias.springshopapi.auth.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.util.Date;
 
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
-    @Column(name="created_at", nullable = false, insertable = false, updatable = false)
-    private OffsetDateTime createdAt;
+    @Column(name="created_at", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
     @Column(name = "updated_at")
-    private OffsetDateTime updatedAt;
+    private Date updatedAt;
+
+    @PrePersist
+    public void prePersistCreatedAt(){
+        this.createdAt = new Date();
+    }
 }
