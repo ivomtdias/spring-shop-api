@@ -27,7 +27,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class, StockNotFoundException.class})
     public ResponseEntity<Object> handleUserNotFoundException(
             RuntimeException ex, WebRequest request) {
 
@@ -37,5 +37,17 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         log.error(ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({IllegalStockException.class})
+    public ResponseEntity<Object> handleIllegalStockException(
+            IllegalStockException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }

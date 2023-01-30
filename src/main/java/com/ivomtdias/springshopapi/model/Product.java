@@ -29,4 +29,7 @@ public class Product extends BaseEntity {
     private String name;
     @Column(name="price")
     private double price;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Stock stock;
 }
