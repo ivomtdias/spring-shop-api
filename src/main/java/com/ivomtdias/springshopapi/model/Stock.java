@@ -10,7 +10,13 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "stock")
+@Table(name = "stock",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "product_id_unique",
+                        columnNames = "product_id"
+                )
+        })
 public class Stock extends BaseEntity {
     @Id
     @Column(name = "product_id")

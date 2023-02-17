@@ -15,6 +15,7 @@ import java.util.Map;
 @ControllerAdvice
 @Slf4j
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+    // TODO: ExpiredJwtException
     @ExceptionHandler({UserAlreadyExistsException.class, ProductAlreadyExistsException.class})
     public ResponseEntity<Object> handleAlreadyExistsException(
             RuntimeException ex, WebRequest request) {
@@ -27,7 +28,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class, StockNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class, StockNotFoundException.class, ProductNotInCartException.class})
     public ResponseEntity<Object> handleUserNotFoundException(
             RuntimeException ex, WebRequest request) {
 

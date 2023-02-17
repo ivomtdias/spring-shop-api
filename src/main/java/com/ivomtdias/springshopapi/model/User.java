@@ -20,6 +20,10 @@ import java.util.UUID;
             @UniqueConstraint(
                     name = "customer_email_unique",
                     columnNames = "email"
+            ),
+            @UniqueConstraint(
+                    name = "cart_id_unique",
+                    columnNames = "cart_id"
             )
         }
 )
@@ -46,6 +50,10 @@ public class User extends BaseEntity implements UserDetails {
     private String zipCode;
     @Column(name="country")
     private String country;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    private Cart cart;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

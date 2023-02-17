@@ -2,6 +2,7 @@ package com.ivomtdias.springshopapi.service.impl;
 
 import com.ivomtdias.springshopapi.exception.UserAlreadyExistsException;
 import com.ivomtdias.springshopapi.exception.UserNotFoundException;
+import com.ivomtdias.springshopapi.model.Cart;
 import com.ivomtdias.springshopapi.model.Role;
 import com.ivomtdias.springshopapi.model.User;
 import com.ivomtdias.springshopapi.model.request.SignInRequest;
@@ -50,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
                         .zipCode(request.getZipCode())
                         .country(request.getCountry())
                         .role(Role.CUSTOMER)
+                        .cart(Cart.builder().build())
                         .build()
                 )
         );

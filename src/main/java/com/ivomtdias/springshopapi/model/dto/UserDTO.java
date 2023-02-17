@@ -1,5 +1,6 @@
 package com.ivomtdias.springshopapi.model.dto;
 
+import com.ivomtdias.springshopapi.model.Cart;
 import com.ivomtdias.springshopapi.model.Role;
 
 import java.util.UUID;
@@ -12,6 +13,7 @@ public record UserDTO(
         Role role,
         String address,
         String zipCode,
-        String country
+        String country,
+        Cart cart
 ) {
 }

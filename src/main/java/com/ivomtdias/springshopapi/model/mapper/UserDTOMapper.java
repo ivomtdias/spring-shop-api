@@ -18,7 +18,8 @@ public class UserDTOMapper implements Function<User, UserDTO> {
                 user.getRole(),
                 user.getAddress(),
                 user.getZipCode(),
-                user.getCountry()
+                user.getCountry(),
+                user.getCart()
         );
     }
 }
