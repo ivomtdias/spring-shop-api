@@ -9,6 +9,7 @@ import com.ivomtdias.springshopapi.model.request.SignInRequest;
 import com.ivomtdias.springshopapi.model.request.SignUpRequest;
 import com.ivomtdias.springshopapi.model.response.SignInResponse;
 import com.ivomtdias.springshopapi.model.response.SignUpResponse;
+import com.ivomtdias.springshopapi.repository.CartRepository;
 import com.ivomtdias.springshopapi.repository.UserRepository;
 import com.ivomtdias.springshopapi.service.AuthService;
 import com.ivomtdias.springshopapi.utility.JWTUtility;
@@ -27,11 +28,14 @@ public class AuthServiceImpl implements AuthService {
     private final JWTUtility jwtUtility;
     private final AuthenticationManager authenticationManager;
 
-    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtility jwtUtility, AuthenticationManager authenticationManager) {
+    private final CartRepository cartRepository;
+
+    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtility jwtUtility, AuthenticationManager authenticationManager, CartRepository cartRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtility = jwtUtility;
         this.authenticationManager = authenticationManager;
+        this.cartRepository = cartRepository;
     }
 
     @Override
@@ -41,19 +45,21 @@ public class AuthServiceImpl implements AuthService {
                 user -> {
                     throw new UserAlreadyExistsException(request.getEmail());
                 },
-                () -> userRepository.save(
-                        User.builder()
-                        .firstName(request.getFirstName())
-                        .lastName(request.getLastName())
-                        .email(request.getEmail())
-                        .password(passwordEncoder.encode(request.getPassword()))
-                        .address(request.getAddress())
-                        .zipCode(request.getZipCode())
-                        .country(request.getCountry())
-                        .role(Role.CUSTOMER)
-                        .cart(Cart.builder().build())
-                        .build()
-                )
+                () -> {
+                    userRepository.save(
+                            User.builder()
+                                    .firstName(request.getFirstName())
+                                    .lastName(request.getLastName())
+                                    .email(request.getEmail())
+                                    .password(passwordEncoder.encode(request.getPassword()))
+                                    .address(request.getAddress())
+                                    .zipCode(request.getZipCode())
+                                    .country(request.getCountry())
+                                    .role(Role.CUSTOMER)
+                                    .cart(Cart.builder().build())
+                                    .build()
+                    );
+                }
         );
         return SignUpResponse.builder()
                 .email(request.getEmail())

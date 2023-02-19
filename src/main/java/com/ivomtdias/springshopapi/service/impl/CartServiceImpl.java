@@ -14,6 +14,7 @@ import com.ivomtdias.springshopapi.service.CartService;
 import com.ivomtdias.springshopapi.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,4 +81,16 @@ public class CartServiceImpl implements CartService {
 
         cartProductRepository.delete(cartProduct.get());
     }
+
+    @Override
+    public void clearCart() {
+        cartProductRepository.deleteCartProductsByCartId(userService.getLoggedInUser().getCart().getId());
+    }
+
+    @Override
+    public List<CartProduct> getProducts() {
+        User user = userService.getLoggedInUser();
+        return cartProductRepository.findByCartId(user.getCart().getId());
+    }
+
 }

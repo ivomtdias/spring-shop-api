@@ -28,7 +28,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class, StockNotFoundException.class, ProductNotInCartException.class})
+    @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class, StockNotFoundException.class, ProductNotInCartException.class, OrderNotFoundException.class})
     public ResponseEntity<Object> handleUserNotFoundException(
             RuntimeException ex, WebRequest request) {
 
