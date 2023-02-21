@@ -2,6 +2,7 @@ package com.ivomtdias.springshopapi.controller;
 
 import com.ivomtdias.springshopapi.model.request.SignInRequest;
 import com.ivomtdias.springshopapi.model.request.SignUpRequest;
+import com.ivomtdias.springshopapi.model.response.SignInResponse;
 import com.ivomtdias.springshopapi.model.response.SignUpResponse;
 import com.ivomtdias.springshopapi.service.impl.AuthServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticate(@RequestBody SignInRequest request){
-        return ResponseEntity.ok(authService.signIn(request).getToken());
+    public ResponseEntity<SignInResponse> authenticate(@RequestBody SignInRequest request){
+        return ResponseEntity.ok(authService.signIn(request));
     }
 }
