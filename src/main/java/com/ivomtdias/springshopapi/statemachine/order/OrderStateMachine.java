@@ -3,7 +3,6 @@ package com.ivomtdias.springshopapi.statemachine.order;
 public class OrderStateMachine {
     public static OrderState getNextState(OrderState currentState) {
         return switch (currentState) {
-            case PENDING -> OrderState.PENDING_PAYMENT;
             case PENDING_PAYMENT -> OrderState.PENDING_SHIPMENT;
             case PENDING_SHIPMENT -> OrderState.SHIPPED;
             case SHIPPED -> OrderState.COMPLETED;
@@ -16,6 +15,6 @@ public class OrderStateMachine {
     }
 
     public static OrderState initialState() {
-        return OrderState.PENDING;
+        return OrderState.PENDING_PAYMENT;
     }
 }
