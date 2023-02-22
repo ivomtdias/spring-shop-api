@@ -9,4 +9,6 @@ public interface StockService {
     void addStock(UUID productId, int quantityToAdd);
     void removeStock(UUID productId, int quantityToRemove);
     Set<Stock> findAll();
+    Boolean checkIfItIsInStock(UUID productId, int quantity);
+    Stock getStockStatus(UUID productId);
 }

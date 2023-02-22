@@ -52,6 +52,23 @@ public class StockServiceImpl implements StockService {
         return new HashSet<>(stockRepository.findAll());
     }
 
+    @Override
+    public Boolean checkIfItIsInStock(UUID productId, int quantity) {
+        Optional<Stock> stock = stockRepository.findStockById(productId);
+        if(stock.isEmpty())
+            throw new StockNotFoundException(productId);
+
+        return quantity <= stock.get().getQuantity();
+    }
+
+    @Override
+    public Stock getStockStatus(UUID productId) {
+        Optional<Stock> stock = stockRepository.findStockById(productId);
+        if(stock.isEmpty())
+            throw new StockNotFoundException(productId);
+        return stock.get();
+    }
+
     private StockStatus calculateStockStatus(Stock stock, int quantity) {
         return stock.generateStockStatus(stock.getQuantity() + quantity);
     }
