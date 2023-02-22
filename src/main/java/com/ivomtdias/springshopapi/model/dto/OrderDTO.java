@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public record OrderDTO(
         UUID id,
+        UUID userId,
         List<ProductDTO> products,
         OrderState orderState
 ) {

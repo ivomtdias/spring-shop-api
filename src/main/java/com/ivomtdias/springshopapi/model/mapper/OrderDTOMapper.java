@@ -19,6 +19,7 @@ public class OrderDTOMapper implements Function<Order, OrderDTO> {
     public OrderDTO apply(Order order) {
         return new OrderDTO(
                 order.getId(),
+                order.getUser().getId(),
                 order.getProductList().stream().map(product -> productDTOMapper.apply(product.getProduct())).toList(),
                 order.getOrderState()
         );

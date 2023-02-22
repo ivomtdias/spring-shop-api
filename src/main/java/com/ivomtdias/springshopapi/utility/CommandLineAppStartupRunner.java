@@ -44,6 +44,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         SignUpRequest signUpRequest = new SignUpRequest("fn1", "ln1", "email1", "pass1", "add1", "zip1", "country1");
         authService.signUp(signUpRequest);
 
+        SignUpRequest signUpRequestAdmin = new SignUpRequest("admin", "admin", "admin@gmail.com", "admin", "adminAddress", "adminZip", "adminCountry");
+        authService.signUp(signUpRequestAdmin);
+
         UserDTO user = userService.getUserByEmail(signUpRequest.getEmail());
 
         ProductDTO product;

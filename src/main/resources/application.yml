@@ -4,6 +4,7 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -14,6 +15,10 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
+  #sql:
+    #init:
+      #mode: always
+      #schema-locations: classpath:/scripts/test-data.sql
 
 jwt:
   secret: 566D597133743677397A24432646294A404E635266556A576E5A7234753778214125442A472D4B6150645367566B59703273357638792F423F4528482B4D6251
