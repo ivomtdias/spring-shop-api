@@ -47,17 +47,15 @@ public class OrderServiceImpl implements OrderService {
         if(cartService.getProducts().isEmpty())
             throw new NoProductsInCartException();
 
-        Order order = orderRepository.save(Order.builder()
+        final Order order = orderRepository.save(Order.builder()
                 .orderState(OrderStateMachine.initialState())
                 .user(user)
                 .build());
 
-        final Order finalOrder = order;
-
         List<OrderProduct> orderProducts = cartService.getProducts().stream()
                 .map(cartProduct -> OrderProduct.builder()
                         .product(cartProduct.getProduct())
-                        .order(finalOrder)
+                        .order(order)
                         .build())
                 .toList();
 
