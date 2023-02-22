@@ -91,4 +91,9 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderDTOMapper)
                 .toList();
     }
+
+    @Override
+    public List<OrderDTO> getAllOrders() {
+        return orderRepository.findAll().stream().map(orderDTOMapper).toList();
+    }
 }

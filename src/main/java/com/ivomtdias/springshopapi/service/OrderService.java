@@ -7,4 +7,5 @@ import java.util.List;
 public interface OrderService {
     OrderDTO createOrder();
     List<OrderDTO> getUserOrders();
+    List<OrderDTO> getAllOrders();
 }

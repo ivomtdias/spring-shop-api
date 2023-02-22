@@ -32,4 +32,10 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrders());
     }
 
+    @Secured({"ADMIN"})
+    @GetMapping("/all")
+    public ResponseEntity<List<OrderDTO>> getAllOrders(){
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
 }
