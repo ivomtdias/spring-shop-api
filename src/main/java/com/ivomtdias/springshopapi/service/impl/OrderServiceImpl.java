@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getAllOrders() {
+    public List<OrderDTO> getUserOrders() {
         User user = userService.getLoggedInUser();
         List<Order> ordersByUser = orderRepository.findOrdersByUser(user);
         return ordersByUser.stream()

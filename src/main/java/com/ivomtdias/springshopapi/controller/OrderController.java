@@ -28,8 +28,8 @@ public class OrderController {
 
     @Secured({"ADMIN", "CUSTOMER"})
     @GetMapping()
-    public ResponseEntity<List<OrderDTO>> getAllOrders(){
-        return ResponseEntity.ok(orderService.getAllOrders());
+    public ResponseEntity<List<OrderDTO>> getUserOrders(){
+        return ResponseEntity.ok(orderService.getUserOrders());
     }
 
 }
