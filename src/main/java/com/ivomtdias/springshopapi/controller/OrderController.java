@@ -4,12 +4,10 @@ import com.ivomtdias.springshopapi.model.dto.OrderDTO;
 import com.ivomtdias.springshopapi.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/order")
@@ -36,6 +34,12 @@ public class OrderController {
     @GetMapping("/all")
     public ResponseEntity<List<OrderDTO>> getAllOrders(){
         return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
+    @Secured({"ADMIN", "CUSTOMER"})
+    @PostMapping("/{orderId}/pay")
+    public ResponseEntity<OrderDTO> payOrder(@PathVariable("orderId") UUID orderId){
+        return ResponseEntity.ok(orderService.payOrder(orderId)); // FIXME
     }
 
 }

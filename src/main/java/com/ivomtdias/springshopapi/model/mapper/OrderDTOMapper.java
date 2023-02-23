@@ -21,6 +21,7 @@ public class OrderDTOMapper implements Function<Order, OrderDTO> {
                 order.getId(),
                 order.getUser().getId(),
                 order.getProductList().stream().map(product -> productDTOMapper.apply(product.getProduct())).toList(),
+                order.getProductList().stream().mapToDouble(product -> product.getProduct().getPrice()).sum(),
                 order.getOrderState()
         );
     }

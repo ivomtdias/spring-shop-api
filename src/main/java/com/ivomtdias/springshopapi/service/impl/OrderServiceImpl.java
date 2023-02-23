@@ -2,6 +2,7 @@ package com.ivomtdias.springshopapi.service.impl;
 
 import com.ivomtdias.springshopapi.exception.NoProductsInCartException;
 import com.ivomtdias.springshopapi.exception.NotEnoughStockException;
+import com.ivomtdias.springshopapi.exception.OrderNotFoundException;
 import com.ivomtdias.springshopapi.model.Order;
 import com.ivomtdias.springshopapi.model.OrderProduct;
 import com.ivomtdias.springshopapi.model.User;
@@ -13,13 +14,11 @@ import com.ivomtdias.springshopapi.service.CartService;
 import com.ivomtdias.springshopapi.service.OrderService;
 import com.ivomtdias.springshopapi.service.StockService;
 import com.ivomtdias.springshopapi.service.UserService;
+import com.ivomtdias.springshopapi.statemachine.order.OrderState;
 import com.ivomtdias.springshopapi.statemachine.order.OrderStateMachine;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -95,5 +94,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll().stream().map(orderDTOMapper).toList();
+    }
+
+    @Override
+    public OrderDTO payOrder(UUID orderId) {
+        User user = userService.getLoggedInUser();
+        Optional<Order> orderToBePayed = orderRepository.findOrderByIdAndUserAndPendingPaymentState(orderId, user.getId());
+
+        if(orderToBePayed.isEmpty())
+            throw new OrderNotFoundException(orderId, user.getId());
+
+        // SIMULATED PAYING LOGIC HERE //
+
+        OrderState nextState = OrderStateMachine.getNextState(orderToBePayed.get().getOrderState());
+        orderRepository.updateOrderState(orderId, user.getId(), nextState);
+
+        return orderDTOMapper.apply(orderRepository.findById(orderId).get());
     }
 }

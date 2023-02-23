@@ -9,6 +9,7 @@ public record OrderDTO(
         UUID id,
         UUID userId,
         List<ProductDTO> products,
+        double totalPrice,
         OrderState orderState
 ) {
 }
