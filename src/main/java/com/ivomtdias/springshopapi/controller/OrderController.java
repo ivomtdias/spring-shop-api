@@ -1,6 +1,7 @@
 package com.ivomtdias.springshopapi.controller;
 
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
+import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
 import com.ivomtdias.springshopapi.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -30,16 +31,22 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrders());
     }
 
+    @Secured({"ADMIN", "CUSTOMER"})
+    @PostMapping("/{orderId}/pay")
+    public ResponseEntity<OrderDTO> payOrder(@PathVariable("orderId") UUID orderId){
+        return ResponseEntity.ok(orderService.payOrder(orderId));
+    }
+
     @Secured({"ADMIN"})
     @GetMapping("/all")
     public ResponseEntity<List<OrderDTO>> getAllOrders(){
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @Secured({"ADMIN", "CUSTOMER"})
-    @PostMapping("/{orderId}/pay")
-    public ResponseEntity<OrderDTO> payOrder(@PathVariable("orderId") UUID orderId){
-        return ResponseEntity.ok(orderService.payOrder(orderId)); // FIXME
+    @Secured({"ADMIN"})
+    @PostMapping("/{orderId}/ship")
+    public ResponseEntity<OrderShippedResponse> shipOrder(@PathVariable("orderId") UUID orderId){
+        return ResponseEntity.ok(orderService.shipOrder(orderId));
     }
 
 }

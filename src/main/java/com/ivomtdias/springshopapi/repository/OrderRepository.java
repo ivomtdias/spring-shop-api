@@ -33,4 +33,12 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
             @Param("userId") UUID userId,
             @Param("orderState") OrderState orderState
     );
+
+    @Modifying
+    @Transactional
+    @Query("update Order o set o.orderState = :orderState where o.id = :orderId")
+    void updateOrderState(
+            @Param("orderId") UUID orderId,
+            @Param("orderState") OrderState orderState
+    );
 }

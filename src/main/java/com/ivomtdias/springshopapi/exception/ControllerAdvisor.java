@@ -52,9 +52,9 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({IllegalStockException.class, NoProductsInCartException.class})
-    public ResponseEntity<Object> handleIllegalStockException(
-            IllegalStockException ex, WebRequest request) {
+    @ExceptionHandler({IllegalStockException.class, NoProductsInCartException.class, IllegalOrderStateException.class})
+    public ResponseEntity<Object> handleIllegalException(
+            RuntimeException ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());

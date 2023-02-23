@@ -1,5 +1,6 @@
 package com.ivomtdias.springshopapi.service.impl;
 
+import com.ivomtdias.springshopapi.exception.IllegalOrderStateException;
 import com.ivomtdias.springshopapi.exception.NoProductsInCartException;
 import com.ivomtdias.springshopapi.exception.NotEnoughStockException;
 import com.ivomtdias.springshopapi.exception.OrderNotFoundException;
@@ -7,7 +8,9 @@ import com.ivomtdias.springshopapi.model.Order;
 import com.ivomtdias.springshopapi.model.OrderProduct;
 import com.ivomtdias.springshopapi.model.User;
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
+import com.ivomtdias.springshopapi.model.dto.UserDTO;
 import com.ivomtdias.springshopapi.model.mapper.OrderDTOMapper;
+import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
 import com.ivomtdias.springshopapi.repository.OrderProductRepository;
 import com.ivomtdias.springshopapi.repository.OrderRepository;
 import com.ivomtdias.springshopapi.service.CartService;
@@ -110,5 +113,27 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.updateOrderState(orderId, user.getId(), nextState);
 
         return orderDTOMapper.apply(orderRepository.findById(orderId).get());
+    }
+
+    @Override
+    public OrderShippedResponse shipOrder(UUID orderId) {
+        Optional<Order> orderToBeShipped = orderRepository.findById(orderId);
+
+        if(orderToBeShipped.isEmpty())
+            throw new OrderNotFoundException(orderId);
+
+        if (orderToBeShipped.get().getOrderState() != OrderState.PENDING_SHIPMENT)
+            throw new IllegalOrderStateException(orderId, orderToBeShipped.get().getOrderState());
+
+        OrderState nextState = OrderStateMachine.getNextState(orderToBeShipped.get().getOrderState());
+        orderRepository.updateOrderState(orderId, nextState);
+
+        UserDTO user = userService.getUserById(orderToBeShipped.get().getUser().getId());
+
+        return OrderShippedResponse.builder()
+                .orderId(orderId)
+                .userId(user.id())
+                .destination(String.format("%s, %s, %s", user.address(), user.zipCode(), user.country()))
+                .build();
     }
 }
