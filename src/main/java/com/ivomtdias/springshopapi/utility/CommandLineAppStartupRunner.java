@@ -39,7 +39,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     }
 
     private void generateTestData() {
-        log.warn("##### STARTING GENERATION OF TEST DATA #####");
 
         SignUpRequest signUpRequest = new SignUpRequest("fn1", "ln1", "email1", "pass1", "add1", "zip1", "country1");
         authService.signUp(signUpRequest);
@@ -60,7 +59,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             stockService.addStock(product.id(), 3);
         }
 
-        log.warn("##### FINISHING GENERATION OF TEST DATA #####");
+        log.warn("""
+                \n
+                \t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                \t\t\t\t# ====> GENERATION OF TEST DATA COMPLETED <==== #
+                \t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                # ====> DON'T FORGET TO UPDATE THE USERS TABLE TO ENABLE REQUESTS AS AN ADMIN <==== #
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                """);
 
     }
 }

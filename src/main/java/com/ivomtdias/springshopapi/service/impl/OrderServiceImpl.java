@@ -10,6 +10,7 @@ import com.ivomtdias.springshopapi.model.User;
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
 import com.ivomtdias.springshopapi.model.dto.UserDTO;
 import com.ivomtdias.springshopapi.model.mapper.OrderDTOMapper;
+import com.ivomtdias.springshopapi.model.response.OrderReceivedResponse;
 import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
 import com.ivomtdias.springshopapi.repository.OrderProductRepository;
 import com.ivomtdias.springshopapi.repository.OrderRepository;
@@ -134,6 +135,27 @@ public class OrderServiceImpl implements OrderService {
                 .orderId(orderId)
                 .userId(user.id())
                 .destination(String.format("%s, %s, %s", user.address(), user.zipCode(), user.country()))
+                .build();
+    }
+
+    @Override
+    public OrderReceivedResponse completeOrder(UUID orderId) {
+        Optional<Order> orderToBeCompleted = orderRepository.findById(orderId);
+
+        if(orderToBeCompleted.isEmpty())
+            throw new OrderNotFoundException(orderId);
+
+        if (orderToBeCompleted.get().getOrderState() != OrderState.SHIPPED)
+            throw new IllegalOrderStateException(orderId, orderToBeCompleted.get().getOrderState());
+
+        OrderState nextState = OrderStateMachine.getNextState(orderToBeCompleted.get().getOrderState());
+        orderRepository.updateOrderState(orderId, nextState);
+
+        UserDTO user = userService.getUserById(orderToBeCompleted.get().getUser().getId());
+
+        return OrderReceivedResponse.builder()
+                .orderId(orderId)
+                .userId(user.id())
                 .build();
     }
 }

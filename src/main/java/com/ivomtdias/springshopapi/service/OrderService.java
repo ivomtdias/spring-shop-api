@@ -1,6 +1,7 @@
 package com.ivomtdias.springshopapi.service;
 
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
+import com.ivomtdias.springshopapi.model.response.OrderReceivedResponse;
 import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface OrderService {
     List<OrderDTO> getAllOrders();
     OrderDTO payOrder(UUID orderId);
     OrderShippedResponse shipOrder(UUID orderId);
+    OrderReceivedResponse completeOrder(UUID orderId);
 }

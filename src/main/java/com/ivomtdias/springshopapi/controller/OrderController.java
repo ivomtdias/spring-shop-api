@@ -1,6 +1,7 @@
 package com.ivomtdias.springshopapi.controller;
 
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
+import com.ivomtdias.springshopapi.model.response.OrderReceivedResponse;
 import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
 import com.ivomtdias.springshopapi.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,12 @@ public class OrderController {
     @PostMapping("/{orderId}/ship")
     public ResponseEntity<OrderShippedResponse> shipOrder(@PathVariable("orderId") UUID orderId){
         return ResponseEntity.ok(orderService.shipOrder(orderId));
+    }
+
+    @Secured({"ADMIN"})
+    @PostMapping("/{orderId}/complete")
+    public ResponseEntity<OrderReceivedResponse> completeOrder(@PathVariable("orderId") UUID orderId){
+        return ResponseEntity.ok(orderService.completeOrder(orderId));
     }
 
 }
