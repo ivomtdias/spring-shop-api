@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### IMPORTANT HIDE ###
+/docs/env_variables.sh
