@@ -61,6 +61,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.cancelOrder(orderId));
     }
 
-    // TODO: Cancel order, email service, tests
+    // TODO: Email service, tests
 
 }
