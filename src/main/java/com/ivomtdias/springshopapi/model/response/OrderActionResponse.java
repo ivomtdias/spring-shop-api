@@ -1,5 +1,6 @@
 package com.ivomtdias.springshopapi.model.response;
 
+import com.ivomtdias.springshopapi.statemachine.order.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,9 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Deprecated
-public class OrderShippedResponse {
+public class OrderActionResponse {
     UUID orderId;
     UUID userId;
     String destination;
+    OrderState orderState;
 }

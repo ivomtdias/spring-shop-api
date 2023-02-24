@@ -10,8 +10,7 @@ import com.ivomtdias.springshopapi.model.User;
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
 import com.ivomtdias.springshopapi.model.dto.UserDTO;
 import com.ivomtdias.springshopapi.model.mapper.OrderDTOMapper;
-import com.ivomtdias.springshopapi.model.response.OrderReceivedResponse;
-import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
+import com.ivomtdias.springshopapi.model.response.OrderActionResponse;
 import com.ivomtdias.springshopapi.repository.OrderProductRepository;
 import com.ivomtdias.springshopapi.repository.OrderRepository;
 import com.ivomtdias.springshopapi.service.CartService;
@@ -117,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderShippedResponse shipOrder(UUID orderId) {
+    public OrderActionResponse shipOrder(UUID orderId) {
         Optional<Order> orderToBeShipped = orderRepository.findById(orderId);
 
         if(orderToBeShipped.isEmpty())
@@ -131,15 +130,16 @@ public class OrderServiceImpl implements OrderService {
 
         UserDTO user = userService.getUserById(orderToBeShipped.get().getUser().getId());
 
-        return OrderShippedResponse.builder()
+        return OrderActionResponse.builder()
                 .orderId(orderId)
                 .userId(user.id())
                 .destination(String.format("%s, %s, %s", user.address(), user.zipCode(), user.country()))
+                .orderState(OrderState.SHIPPED)
                 .build();
     }
 
     @Override
-    public OrderReceivedResponse completeOrder(UUID orderId) {
+    public OrderActionResponse completeOrder(UUID orderId) {
         Optional<Order> orderToBeCompleted = orderRepository.findById(orderId);
 
         if(orderToBeCompleted.isEmpty())
@@ -153,9 +153,34 @@ public class OrderServiceImpl implements OrderService {
 
         UserDTO user = userService.getUserById(orderToBeCompleted.get().getUser().getId());
 
-        return OrderReceivedResponse.builder()
+        return OrderActionResponse.builder()
                 .orderId(orderId)
                 .userId(user.id())
+                .destination(String.format("%s, %s, %s",user.address(), user.zipCode(), user.country()))
+                .orderState(OrderState.COMPLETED)
+                .build();
+    }
+
+    @Override
+    public OrderActionResponse cancelOrder(UUID orderId) {
+        Optional<Order> orderToBeCanceled = orderRepository.findById(orderId);
+
+        if(orderToBeCanceled.isEmpty())
+            throw new OrderNotFoundException(orderId);
+
+        if (orderToBeCanceled.get().getOrderState() == OrderState.CANCELED)
+            throw new IllegalOrderStateException(orderId, orderToBeCanceled.get().getOrderState());
+
+        OrderState nextState = OrderStateMachine.cancelOrder();
+        orderRepository.updateOrderState(orderId, nextState);
+
+        UserDTO user = userService.getUserById(orderToBeCanceled.get().getUser().getId());
+
+        return OrderActionResponse.builder()
+                .orderId(orderId)
+                .userId(user.id())
+                .destination(String.format("%s, %s, %s",user.address(), user.zipCode(), user.country()))
+                .orderState(OrderState.CANCELED)
                 .build();
     }
 }

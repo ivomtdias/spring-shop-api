@@ -11,7 +11,9 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Deprecated
 public class OrderReceivedResponse {
+
     UUID orderId;
     UUID userId;
 }

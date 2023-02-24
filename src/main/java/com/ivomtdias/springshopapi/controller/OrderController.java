@@ -1,8 +1,7 @@
 package com.ivomtdias.springshopapi.controller;
 
 import com.ivomtdias.springshopapi.model.dto.OrderDTO;
-import com.ivomtdias.springshopapi.model.response.OrderReceivedResponse;
-import com.ivomtdias.springshopapi.model.response.OrderShippedResponse;
+import com.ivomtdias.springshopapi.model.response.OrderActionResponse;
 import com.ivomtdias.springshopapi.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -46,14 +45,22 @@ public class OrderController {
 
     @Secured({"ADMIN"})
     @PostMapping("/{orderId}/ship")
-    public ResponseEntity<OrderShippedResponse> shipOrder(@PathVariable("orderId") UUID orderId){
+    public ResponseEntity<OrderActionResponse> shipOrder(@PathVariable("orderId") UUID orderId){
         return ResponseEntity.ok(orderService.shipOrder(orderId));
     }
 
     @Secured({"ADMIN"})
     @PostMapping("/{orderId}/complete")
-    public ResponseEntity<OrderReceivedResponse> completeOrder(@PathVariable("orderId") UUID orderId){
+    public ResponseEntity<OrderActionResponse> completeOrder(@PathVariable("orderId") UUID orderId){
         return ResponseEntity.ok(orderService.completeOrder(orderId));
     }
+
+    @Secured({"ADMIN", "CUSTOMER"})
+    @PatchMapping("/{orderId}/cancel")
+    public ResponseEntity<OrderActionResponse> cancelOrder(@PathVariable("orderId") UUID orderId){
+        return ResponseEntity.ok(orderService.cancelOrder(orderId));
+    }
+
+    // TODO: Cancel order, email service, tests
 
 }
