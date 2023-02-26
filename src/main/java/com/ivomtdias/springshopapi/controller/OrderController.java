@@ -60,7 +60,4 @@ public class OrderController {
     public ResponseEntity<OrderActionResponse> cancelOrder(@PathVariable("orderId") UUID orderId){
         return ResponseEntity.ok(orderService.cancelOrder(orderId));
     }
-
-    // TODO: Email service, tests
-
 }
