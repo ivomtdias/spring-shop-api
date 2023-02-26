@@ -28,39 +28,35 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("The provided token is expired. Please sign in and try again!", HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler({EmailException.class})
+    public ResponseEntity<Object> handleEmailException(
+            RuntimeException ex, WebRequest request) {
+        return new ResponseEntity<>(generateBodyMap(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler({UserAlreadyExistsException.class, ProductAlreadyExistsException.class})
     public ResponseEntity<Object> handleAlreadyExistsException(
             RuntimeException ex, WebRequest request) {
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-
-        log.error(ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(generateBodyMap(ex), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({UserNotFoundException.class, ProductNotFoundException.class, StockNotFoundException.class, ProductNotInCartException.class, OrderNotFoundException.class})
     public ResponseEntity<Object> handleUserNotFoundException(
             RuntimeException ex, WebRequest request) {
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-
-        log.error(ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(generateBodyMap(ex), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({IllegalStockException.class, NoProductsInCartException.class, IllegalOrderStateException.class})
     public ResponseEntity<Object> handleIllegalException(
             RuntimeException ex, WebRequest request) {
+        return new ResponseEntity<>(generateBodyMap(ex), HttpStatus.BAD_REQUEST);
+    }
 
+    private Map<String, Object> generateBodyMap(RuntimeException ex){
+        log.error(ex.getMessage());
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
-
-        log.error(ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return body;
     }
 }

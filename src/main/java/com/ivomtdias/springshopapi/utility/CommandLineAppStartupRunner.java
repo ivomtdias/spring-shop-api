@@ -22,6 +22,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final CartService cartService;
     private final AuthService authService;
 
+    private final Random random;
+
     public CommandLineAppStartupRunner(Environment env, UserService userService, ProductService productService, StockService stockService, CartService cartService, AuthService authService) {
         this.env = env;
         this.userService = userService;
@@ -29,6 +31,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         this.stockService = stockService;
         this.cartService = cartService;
         this.authService = authService;
+        random = new Random();
     }
 
     @Override
@@ -40,7 +43,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     private void generateTestData() {
 
-        SignUpRequest signUpRequest = new SignUpRequest("fn1", "ln1", "email1", "pass1", "add1", "zip1", "country1");
+        SignUpRequest signUpRequest = new SignUpRequest("fn1", "ln1", "ivomtdias@gmail.com", "pass1", "add1", "zip1", "country1");
         authService.signUp(signUpRequest);
 
         SignUpRequest signUpRequestAdmin = new SignUpRequest("admin", "admin", "admin@gmail.com", "admin", "adminAddress", "adminZip", "adminCountry");
@@ -53,7 +56,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             product = productService.createProduct(
                     new CreateProductRequest(
                             "p" + i,
-                            new Random().nextDouble(100.00) + 1.00
+                            random.nextDouble(100.00) + 1.00
                     )
             );
             stockService.addStock(product.id(), 3);

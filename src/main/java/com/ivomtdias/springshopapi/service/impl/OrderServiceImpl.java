@@ -1,9 +1,6 @@
 package com.ivomtdias.springshopapi.service.impl;
 
-import com.ivomtdias.springshopapi.exception.IllegalOrderStateException;
-import com.ivomtdias.springshopapi.exception.NoProductsInCartException;
-import com.ivomtdias.springshopapi.exception.NotEnoughStockException;
-import com.ivomtdias.springshopapi.exception.OrderNotFoundException;
+import com.ivomtdias.springshopapi.exception.*;
 import com.ivomtdias.springshopapi.model.Order;
 import com.ivomtdias.springshopapi.model.OrderProduct;
 import com.ivomtdias.springshopapi.model.User;
@@ -13,12 +10,11 @@ import com.ivomtdias.springshopapi.model.mapper.OrderDTOMapper;
 import com.ivomtdias.springshopapi.model.response.OrderActionResponse;
 import com.ivomtdias.springshopapi.repository.OrderProductRepository;
 import com.ivomtdias.springshopapi.repository.OrderRepository;
-import com.ivomtdias.springshopapi.service.CartService;
-import com.ivomtdias.springshopapi.service.OrderService;
-import com.ivomtdias.springshopapi.service.StockService;
-import com.ivomtdias.springshopapi.service.UserService;
+import com.ivomtdias.springshopapi.service.*;
 import com.ivomtdias.springshopapi.statemachine.order.OrderState;
 import com.ivomtdias.springshopapi.statemachine.order.OrderStateMachine;
+import com.ivomtdias.springshopapi.utility.EmailUtility;
+import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,14 +28,18 @@ public class OrderServiceImpl implements OrderService {
     private final CartService cartService;
     private final OrderProductRepository orderProductRepository;
     private final StockService stockService;
+    private final EmailService emailService;
+    private final EmailUtility emailUtility;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, OrderDTOMapper orderDTOMapper, CartService cartService, OrderProductRepository orderProductRepository, StockService stockService) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, OrderDTOMapper orderDTOMapper, CartService cartService, OrderProductRepository orderProductRepository, StockService stockService, EmailService emailService, EmailUtility emailUtility) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.orderDTOMapper = orderDTOMapper;
         this.cartService = cartService;
         this.orderProductRepository = orderProductRepository;
         this.stockService = stockService;
+        this.emailService = emailService;
+        this.emailUtility = emailUtility;
     }
 
     @Override
@@ -112,6 +112,13 @@ public class OrderServiceImpl implements OrderService {
         OrderState nextState = OrderStateMachine.getNextState(orderToBePayed.get().getOrderState());
         orderRepository.updateOrderState(orderId, user.getId(), nextState);
 
+
+        try {
+            emailService.sendEmail(user.getEmail(), emailUtility.newOrderSubject(), emailUtility.newOrderEmail());
+        } catch (MessagingException exception){
+            throw new EmailException();
+        }
+
         return orderDTOMapper.apply(orderRepository.findById(orderId).get());
     }
 
@@ -129,6 +136,12 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.updateOrderState(orderId, nextState);
 
         UserDTO user = userService.getUserById(orderToBeShipped.get().getUser().getId());
+
+        try {
+            emailService.sendEmail(user.email(), emailUtility.orderShippedSubject(), emailUtility.orderShippedEmail());
+        } catch (MessagingException exception){
+            throw new EmailException();
+        }
 
         return OrderActionResponse.builder()
                 .orderId(orderId)
@@ -153,6 +166,12 @@ public class OrderServiceImpl implements OrderService {
 
         UserDTO user = userService.getUserById(orderToBeCompleted.get().getUser().getId());
 
+        try {
+            emailService.sendEmail(user.email(), emailUtility.orderCompletedSubject(), emailUtility.orderCompletedEmail());
+        } catch (MessagingException exception){
+            throw new EmailException();
+        }
+
         return OrderActionResponse.builder()
                 .orderId(orderId)
                 .userId(user.id())
@@ -175,6 +194,12 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.updateOrderState(orderId, nextState);
 
         UserDTO user = userService.getUserById(orderToBeCanceled.get().getUser().getId());
+
+        try {
+            emailService.sendEmail(user.email(), emailUtility.orderCanceledSubject(), emailUtility.orderCanceledEmail());
+        } catch (MessagingException exception){
+            throw new EmailException();
+        }
 
         return OrderActionResponse.builder()
                 .orderId(orderId)

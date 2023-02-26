@@ -1,6 +1,10 @@
 package com.ivomtdias.springshopapi.statemachine.order;
 
 public class OrderStateMachine {
+    private OrderStateMachine(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static OrderState getNextState(OrderState currentState) {
         return switch (currentState) {
             case PENDING_PAYMENT -> OrderState.PENDING_SHIPMENT;
@@ -11,7 +15,7 @@ public class OrderStateMachine {
     }
 
     public static OrderState cancelOrder(){
-        return OrderState.CANCELLED;
+        return OrderState.CANCELED;
     }
 
     public static OrderState initialState() {

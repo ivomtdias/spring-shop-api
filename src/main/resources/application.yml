@@ -5,7 +5,10 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   mail:
-    host: ${env.SMTP_HOST}
+    host: ${SHOP_API_MAIL_HOST}
+    port: ${SHOP_API_MAIL_PORT}
+    username: ${SHOP_API_MAIL_USERNAME}
+    password: ${SHOP_API_MAIL_PASSWORD}
 
   jpa:
     hibernate:
@@ -24,9 +27,3 @@ spring:
 
 jwt:
   secret: 566D597133743677397A24432646294A404E635266556A576E5A7234753778214125442A472D4B6150645367566B59703273357638792F423F4528482B4D6251
-
-#flyway:
-  #url: jdbc:postgresql://localhost:5432/shop_api
-  #schemas: public
-  #user: "postgres"
-  #password: "postgres"
