@@ -1,11 +1,22 @@
 version: '3.8'
 services:
+  api:
+    image: "spring-shop-api"
+    environment:
+      - SPRING_PROFILES_ACTIVE=testdata
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
   db:
+    container_name: spring-shop-api-db
     image: postgres:14.1-alpine
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=shop_api
     ports:
       - '5432:5432'
     volumes:
@@ -15,6 +26,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
 volumes:
   db:
     driver: local
