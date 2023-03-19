@@ -35,8 +35,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        if(env.getActiveProfiles()[0].equals("testdata")){
+    public void run(String... args) {
+        if(env.getActiveProfiles().length > 0 && env.getActiveProfiles()[0].equals("testdata")) {
             generateTestData();
         }
     }
