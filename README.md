@@ -48,7 +48,7 @@ docker compose up -d
 ```
 - If the image already exists we just need to run docker compose
 ```
-docler compose up -d
+docker compose up -d
 ```
 
 ---
