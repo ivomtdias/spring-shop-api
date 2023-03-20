@@ -53,6 +53,12 @@ docler compose up -d
 
 ---
 
+## Swagger
+To check api documentation launch the application and navigate to
+[API Docs](http://localhost:8080/v3/api-docs).
+
+To check swagger ui and all the available endpoints launch the application and navigate to [Swagger-UI](http://localhost:8080/swagger-ui/index.html#/).
+
 ## Usage
 
 Once the application is running, you can make requests using **Postman**.
